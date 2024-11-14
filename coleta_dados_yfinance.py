@@ -2,6 +2,7 @@ import yfinance as yf
 import mysql.connector
 from datetime import datetime
 
+
 # Configuração do Banco de Dados MySQL
 """ conn = mysql.connector.connect(
     host="localhost",
