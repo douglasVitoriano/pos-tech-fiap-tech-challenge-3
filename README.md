@@ -5,7 +5,7 @@ Este projeto realiza a análise de sentimentos em notícias financeiras e prevê
 ## Estrutura do Projeto
 
 1. **Importar Bibliotecas**: Importar as bibliotecas necessárias, como `pandas`, `newsapi`, `transformers`, `datetime`, `yfinance`, `xgboost`, e `matplotlib`.
-2. **Inicializar a API do NewsAPI**: Configurar a API do NewsAPI com a chave de API.
+2. **Inicializar a API do NewsAPI**: Configure a API do NewsAPI com a chave de API.
 3. **Obter Notícias**: Definir uma função para obter notícias de um ticker específico em um intervalo de datas.
 4. **Classificar Sentimentos**: Definir uma função para classificar o sentimento das notícias usando o modelo FinBERT.
 5. **Obter Dados Históricos de Preços**: Usar a biblioteca `yfinance` para obter dados históricos de preços das ações.
@@ -30,5 +30,5 @@ Este projeto realiza a análise de sentimentos em notícias financeiras e prevê
 ## Instalação
 
 1. Clone o repositório:
-   git clone https://github.com/seu-usuario/seu-repositorio.git
-   cd seu-repositorio
+   git clone https://github.com/douglasVitoriano/pos-tech-fiap-tech-challenge-3.git
+   cd pos-tech-fiap-tech-challenge-3
