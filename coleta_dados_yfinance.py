@@ -1,5 +1,5 @@
 import yfinance as yf
-import mysql.connector
+# import mysql.connector
 from datetime import datetime
 
 
@@ -21,7 +21,7 @@ def coletar_dados(tickers):
 
     # print(dados.head())  # Visualiza os primeiros registros
 
-    acao = yf.Ticker("AAPL")
+    acao = yf.Ticker("HGLG11.SA")
 
     info = acao.info
 
@@ -35,7 +35,7 @@ def coletar_dados(tickers):
     print("Dividendos:")
     print(dividendos)
     print("\nSplits:")
-    print(splits)
+    print(splits) 
 
     for ticker in tickers:
         # Coleta de dados históricos (últimos 30 dias)
@@ -58,7 +58,7 @@ def coletar_dados(tickers):
             )
             """ cursor.execute(sql, valores)
         conn.commit() """
-        # print(f"Dados do ticker {ticker.info} inseridos com sucesso.")
+        # print(f"Dados do ticker {valores} inseridos com sucesso.")
 
 # Executa a Coleta de Dados
 try:
