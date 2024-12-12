@@ -19,7 +19,7 @@ def get_stock_news(ticker, page_size=10, page=1):
         return []
 
 if __name__ == "__main__":
-    ticker = 'MGLU3'
+    ticker = 'São Carlos Empreendimentos'
     news = []
 
     # Buscar até 5 páginas de notícias
