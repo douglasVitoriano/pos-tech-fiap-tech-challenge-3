@@ -1,34 +1,114 @@
-# Análise de Sentimentos e Previsão de Preços de Ações
+# Real Estate Pricing System
 
-Este projeto realiza a análise de sentimentos em notícias financeiras e prevê o preço das ações com base nessa análise. Utiliza a API do NewsAPI para obter notícias, o modelo FinBERT para classificar os sentimentos das notícias, e o modelo XGBoost para prever os preços das ações.
+## Descrição
+Este projeto tem como objetivo estimar preços de aluguel e venda de imóveis com base em suas características, utilizando algoritmos de aprendizado de máquina. Ele inclui um modelo treinado, uma API para previsões e um dashboard interativo para visualização e análise de dados.
 
-## Estrutura do Projeto
+---
 
-1. **Importar Bibliotecas**: Importar as bibliotecas necessárias, como `pandas`, `newsapi`, `transformers`, `datetime`, `yfinance`, `xgboost`, e `matplotlib`.
-2. **Inicializar a API do NewsAPI**: Configure a API do NewsAPI com a chave de API.
-3. **Obter Notícias**: Definir uma função para obter notícias de um ticker específico em um intervalo de datas.
-4. **Classificar Sentimentos**: Definir uma função para classificar o sentimento das notícias usando o modelo FinBERT.
-5. **Obter Dados Históricos de Preços**: Usar a biblioteca `yfinance` para obter dados históricos de preços das ações.
-6. **Combinar Dados**: Combinar os dados de preços das ações com os sentimentos das notícias.
-7. **Treinar Modelo**: Treinar um modelo XGBoost para prever os preços das ações.
-8. **Avaliar Modelo**: Avaliar a precisão do modelo e visualizar os resultados.
+## Funcionalidades
+- **Treinamento de Modelo**: Treina modelos de regressão para prever preços de imóveis com base em dados históricos.
+- **API Flask**: Permite prever preços através de chamadas RESTful.
+- **Dashboard Streamlit**: Exibe insights sobre os dados, estatísticas e permite previsões interativas.
+- **Gráficos Interativos**: Inclui gráficos de distribuição de preços e relações entre características dos imóveis.
 
-## Requisitos
+---
 
-- Python 3.7 ou superior
-- Bibliotecas Python:
-  - pandas
-  - requests
-  - newsapi-python
-  - transformers
-  - torch
-  - yfinance
-  - xgboost
-  - scikit-learn
-  - matplotlib
+## Tecnologias Utilizadas
+- **Linguagem**: Python 3.12
+- **Bibliotecas**:
+  - Machine Learning: `scikit-learn`
+  - Manipulação de Dados: `pandas`, `numpy`
+  - API: `Flask`
+  - Dashboard: `Streamlit`
+  - Visualização: `matplotlib`
+  - Persistência de Modelos: `joblib`
+- **Ambiente Virtual**: `venv`
 
-## Instalação
+---
+
+## Como Configurar o Projeto
+
+### Pré-requisitos
+- Python 3.8 ou superior.
+- Git instalado na máquina.
+
+### Passo a Passo
 
 1. Clone o repositório:
-   git clone https://github.com/douglasVitoriano/pos-tech-fiap-tech-challenge-3.git
-   cd pos-tech-fiap-tech-challenge-3
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   cd real-estate-pricing-system
+   ```
+
+2. Crie e ative o ambiente virtual:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate   # Linux/Mac
+   venv\Scripts\activate    # Windows
+   ```
+
+3. Instale as dependências:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Treine o modelo e gere os arquivos necessários:
+   ```bash
+   python coleta_dados.py
+   ```
+
+5. Inicie o dashboard:
+   ```bash
+   streamlit run dashboard.py
+   ```
+
+---
+
+## Estrutura do Projeto
+```
+pos-tech-fiap-tech-challenge-3/
+├── coleta_dados_melhorado.py        # Script de treinamento do modelo
+├── dashboard.py                     # Dashboard interativo em Streamlit
+├── requirements.txt                 # Dependências do projeto
+├── real_estate_model.pkl            # Modelo treinado
+├── feature_columns.pkl              # Colunas usadas no treinamento
+├── real_estate_data.csv             # Conjunto de dados para análise
+├── venv/                            # Ambiente virtual
+```
+
+---
+
+## Uso
+
+### Usando a API Flask
+
+1. Inicie o servidor da API:
+   ```bash
+   python coleta_dados.py
+   ```
+
+2. Faça uma requisição POST para o endpoint `/predict`:
+   ```bash
+   curl -X POST http://127.0.0.1:5000/predict \
+   -H "Content-Type: application/json" \
+   -d '{
+       "area": 120,
+       "rooms": 3,
+       "location_Downtown": 1,
+       "location_Rural": 0,
+       "location_Suburb": 0,
+       "price_per_sq_meter": 25.0,
+       "room_density": 0.025
+   }'
+   ```
+
+3. Resposta esperada:
+   ```json
+   {
+       "predicted_price": 3200.0
+   }
+   ```
+
+## Licença
+Este projeto está licenciado sob a MIT License. Consulte o arquivo LICENSE para mais detalhes.
+
