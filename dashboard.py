@@ -6,6 +6,8 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
+
+df = pd.read_csv("real_estate_data.csv")
 # Configuração do Dashboard
 st.title("Real Estate Pricing Dashboard")
 st.write("""
@@ -16,7 +18,7 @@ Este dashboard fornece estimativas de preços de imóveis com base em suas carac
 st.sidebar.header("Insira as características do imóvel:")
 area = st.sidebar.number_input("Área (m²):", min_value=1, max_value=1000, value=100)
 rooms = st.sidebar.number_input("Número de Quartos:", min_value=1, max_value=10, value=3)
-location = st.sidebar.selectbox("Localização:", ["Downtown", "Suburb", "Rural"])
+location = st.sidebar.selectbox("Cidade:", df["city"])
 
 # Carregar as colunas de features
 feature_columns = joblib.load("feature_columns.pkl")
@@ -27,8 +29,8 @@ model = joblib.load("real_estate_model.pkl")
 # Preprocessamento de Dados de Entrada
 def preprocess_input(area, rooms, location):
     data = pd.DataFrame({
-        "area": [area],
-        "rooms": [rooms],
+        "house_size": [area],
+        "bed": [rooms],
         "price_per_sq_meter": [0],  # Placeholder; será calculado após o ajuste do preço
         "room_density": [rooms / area],
         "location_Downtown": [1 if location == "Downtown" else 0],
@@ -47,7 +49,7 @@ def preprocess_input(area, rooms, location):
 
     # Normalização das variáveis numéricas
     scaler = StandardScaler()
-    numerical_features = ["area", "rooms", "price_per_sq_meter", "room_density"]
+    numerical_features = ["house_size", "bed", "price_per_sq_meter", "room_density"]
     data[numerical_features] = scaler.fit_transform(data[numerical_features])
     return data
 
@@ -85,4 +87,4 @@ st.bar_chart(hist_values)
 
 
 st.subheader("Relação Área x Preço")
-st.scatter_chart(data, x="area", y="price", size="rooms", color="location")
+st.scatter_chart(data, x="house_size", y="price", size="bed", color="city")

@@ -1,7 +1,3 @@
-# Real Estate Pricing System
-# Detailed implementation in Python
-
-# Step 1: Import Necessary Libraries
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
@@ -11,50 +7,80 @@ from sklearn.metrics import mean_absolute_error, r2_score
 from sklearn.preprocessing import StandardScaler
 from flask import Flask, request, jsonify
 import joblib
+import kaggle
+import os
 
-# Step 2: Data Collection (Expanded Dataset)
-data = {
-    "location": [
-        "Downtown", "Suburb", "Downtown", "Suburb", "Rural",
-        "Downtown", "Downtown", "Suburb", "Rural", "Suburb",
-        "Downtown", "Rural", "Suburb", "Downtown", "Rural",
-        "Suburb", "Downtown", "Suburb", "Rural", "Downtown"
-    ],
-    "area": [
-        120, 80, 150, 60, 200,
-        140, 90, 100, 180, 70,
-        160, 190, 85, 130, 210,
-        75, 155, 95, 195, 145
-    ],
-    "rooms": [
-        3, 2, 4, 2, 5,
-        4, 3, 3, 5, 2,
-        5, 5, 3, 4, 6,
-        2, 4, 3, 6, 4
-    ],
-    "price": [
-        3000, 2000, 3500, 1500, 4000,
-        3200, 2500, 2800, 4500, 2200,
-        3600, 4700, 2400, 3300, 5000,
-        1700, 3400, 2600, 5200, 3700
-    ]
-}
-# Convert to DataFrame
-df = pd.DataFrame(data)
+def download_and_process_dataset():
+    dataset_name = 'ahmedshahriarsakib/usa-real-estate-dataset'  
+
+    # path do download
+    download_path = './kaggle_data'
+
+    # Baixando e descompactando os arquivos do dataset
+    print(f"Baixando o dataset {dataset_name}...")
+    kaggle.api.dataset_download_files(dataset_name, path=download_path, unzip=True)
+
+    # checar conteudo baixado
+    print("Conteúdo do diretório de download:", os.listdir(download_path))
+
+    # carregando csv
+    csv_file_path = os.path.join(download_path, 'realtor-data.zip.csv')  # Verifique o nome correto do arquivo após descompactar
+
+    # Carregar o CSV em um DataFrame
+    print(f"Carregando os dados de {csv_file_path}...")
+    df = pd.read_csv(csv_file_path, nrows=100)
+
+    # Exibir as primeiras linhas do dataset
+    print("Exibindo as primeiras linhas do dataset:")
+    print(df.head())
+
+    # Salve o DataFrame em um novo arquivo CSV
+    output_csv_path = './output/real_estate_data.csv'
+
+    # Crie o diretório de saída caso não exista
+    os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
+
+    # Salve o DataFrame em um arquivo CSV
+    df.to_csv(output_csv_path, index=False)
+
+def process_train():
+
+    df = pd.read_csv("/home/ayres/Documents/estudos/pos-tech-fiap-tech-challenge-3/output/real_estate_data.csv", sep=",")
+
+    
+    df = df.drop('brokered_by', axis=1)
+    df = df.drop('status', axis=1)
+    df = df.drop('bath', axis=1)
+    df = df.drop('street', axis=1)
+    df = df.drop('state', axis=1)
+    df = df.drop('zip_code', axis=1)
+    df = df.drop('acre_lot', axis=1)
+    df = df.drop('prev_sold_date', axis=1)
+
+    #tratamento city
+    df['city'] = df['city'].str.lower().str.strip().str.replace(r'\s+', ' ', regex=True)
+    df = df.drop_duplicates(subset='city').reset_index(drop=True)
+    df = df.dropna()
+    
+    print("Exibindo as primeiras linhas do dataset tratado:")
+    print(df.head())
+    return df
 
 # Feature Engineering
 def feature_engineering(df):
-    df["price_per_sq_meter"] = df["price"] / df["area"]
-    df["room_density"] = df["rooms"] / df["area"]
+    df["price_per_sq_meter"] = df["price"] / df["house_size"]
+    df["room_density"] = df["bed"] / df["house_size"]
     return df
 
-df = feature_engineering(df)
+get_data = download_and_process_dataset()
+processing = process_train()
+df = feature_engineering(processing)
 
 # Step 3: Data Preprocessing
 def preprocess_data(df):
-    df = pd.get_dummies(df, columns=["location"], drop_first=True)  # One-hot encoding for 'location'
+    df = pd.get_dummies(df, columns=["city"], drop_first=True)  # One-hot encoding for 'location'
     scaler = StandardScaler()
-    numerical_features = ["area", "rooms", "price_per_sq_meter", "room_density"]
+    numerical_features = ["house_size", "bed", "price_per_sq_meter", "room_density"]
     df[numerical_features] = scaler.fit_transform(df[numerical_features])
     return df
 
