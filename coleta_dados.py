@@ -35,7 +35,7 @@ def download_and_process_dataset():
     print(df.head())
 
     # Salve o DataFrame em um novo arquivo CSV
-    output_csv_path = './output/real_estate_data.csv'
+    output_csv_path = './output/real_estate_data_raw.csv'
 
     # Crie o diretório de saída caso não exista
     os.makedirs(os.path.dirname(output_csv_path), exist_ok=True)
@@ -45,7 +45,7 @@ def download_and_process_dataset():
 
 def process_train():
 
-    df = pd.read_csv("/home/ayres/Documents/estudos/pos-tech-fiap-tech-challenge-3/output/real_estate_data.csv", sep=",")
+    df = pd.read_csv("/home/ayres/Documents/estudos/pos-tech-fiap-tech-challenge-3/output/real_estate_data_raw.csv", sep=",")
 
     
     df = df.drop('brokered_by', axis=1)
@@ -70,6 +70,7 @@ def process_train():
 def feature_engineering(df):
     df["price_per_sq_meter"] = df["price"] / df["house_size"]
     df["room_density"] = df["bed"] / df["house_size"]
+    df["house_size"] = df["house_size"] * 0.0929
     return df
 
 get_data = download_and_process_dataset()
