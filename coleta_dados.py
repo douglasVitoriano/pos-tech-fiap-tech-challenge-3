@@ -188,7 +188,3 @@ def predict():
 if __name__ == '__main__':
     app.run(debug=True)
 
-# Notes:
-# 1. Feature engineering and scaling have been added to enhance model inputs.
-# 2. Multiple models are compared, and the best model is selected for deployment.
-# 3. Flask is still in development mode. Use Gunicorn for production.
