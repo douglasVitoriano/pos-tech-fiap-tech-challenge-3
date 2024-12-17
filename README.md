@@ -67,7 +67,7 @@ Este projeto tem como objetivo estimar preços de aluguel e venda de imóveis co
 ## Estrutura do Projeto
 ```
 pos-tech-fiap-tech-challenge-3/
-├── coleta_dados_melhorado.py        # Script de treinamento do modelo
+├── coleta_dados.py                  # Script de treinamento do modelo
 ├── dashboard.py                     # Dashboard interativo em Streamlit
 ├── requirements.txt                 # Dependências do projeto
 ├── real_estate_model.pkl            # Modelo treinado
